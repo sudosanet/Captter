@@ -1,0 +1,22 @@
+﻿<Window x:Class="captter3.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="169" Width="300" ResizeMode="NoResize" AllowsTransparency="True" WindowStyle="None" Topmost="True" Background="#FFFFECDD" Loaded="Window_Loaded">
+    <Grid>
+        <TextBox x:Name="tweet" AcceptsReturn="True" HorizontalAlignment="Left" Height="123" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="300" RenderTransformOrigin="0.383,0.261" Background="{x:Null}" KeyDown="tweet_KeyDown" AcceptsTab="True"/>
+        <TextBox x:Name="has" HorizontalAlignment="Left" Height="25" Margin="0,123,0,0" TextWrapping="Wrap" Text="#captter" VerticalAlignment="Top" Width="256">
+            <TextBox.Background>
+                <SolidColorBrush Color="White" Opacity="0.15"/>
+            </TextBox.Background>
+        </TextBox>
+        <Button Content="設定" HorizontalAlignment="Left" Margin="254,123,0,0" Width="46" Background="#FFFDF9B2" Click="Button_Click" Loaded="Button_Loaded"/>
+        <TextBlock HorizontalAlignment="Center" Margin="0,148,115,1" TextWrapping="Wrap" VerticalAlignment="Center" Width="185" Height="20" TextOptions.TextHintingMode="Animated" Padding="0">
+            <TextBlock.Background>
+                <SolidColorBrush Color="#FFE0C6A3" Opacity="0.4"/>
+            </TextBlock.Background><Run Text="ここをつかんで移動"/><InlineUIContainer>
+        	</InlineUIContainer></TextBlock>
+        <Button Content="×" HorizontalAlignment="Left" Margin="181,148,0,0" VerticalAlignment="Top" Width="31" Background="#FFFD8798" FontSize="14" Click="Button_Click_1"/>
+        <Button x:Name="mode" Content="false" HorizontalAlignment="Left" Margin="212,148,0,0" Width="42" Background="#FF555464" Foreground="#FFE3D2CB" Click="Button_Click_2"/>
+
+    </Grid>
+</Window>
