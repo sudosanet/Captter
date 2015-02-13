@@ -92,9 +92,17 @@ namespace captter3
             {
                 token = session.GetTokens(code);
             }
-            catch(CoreTweet.TwitterException)
+            catch(CoreTweet.TwitterException ex)
             {
-                MessageBox.Show("エラーが発生しました、もう一度やり直してください","info");
+                System.Windows.MessageBox.Show("エラーが発生しました、もう一度やり直してください\n" + ex.Message,
+                                                "info", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            catch(System.Net.WebException ex)
+            {
+                System.Windows.MessageBox.Show("エラーが発生しました、もう一度やり直してください\n" + ex.Message,
+                                                "info", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
             Properties.Settings.Default.AccessToken = token.AccessToken;
             Properties.Settings.Default.TokenSecret = token.AccessTokenSecret;

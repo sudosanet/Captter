@@ -49,6 +49,7 @@ namespace captter3
         bool syaro = false;
         //連投防止
         string homo;
+        DateTime dirWriteDateTime;
         //coreTweet
         public CoreTweet.OAuth.OAuthSession session;
         public CoreTweet.Tokens token;
@@ -97,7 +98,7 @@ namespace captter3
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            if(syaro==false)
+            if(!syaro)
             {
                 syaro = true;
                 mode.Content = "true";
@@ -140,62 +141,69 @@ namespace captter3
         }
         public void testTimer_Tick(object sender, EventArgs e)
         {
-                    string startFolder = Properties.Settings.Default.pass;
-                    try
+            string startFolder = Properties.Settings.Default.pass;
+            try
+            {
+                System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(startFolder);
+
+                //ディレクトリに画像が書き込まれているかどうかのチェック
+                if (dirWriteDateTime == dir.LastWriteTime)
+                {
+                    return;
+                }
+                else
+                {
+                    dirWriteDateTime = dir.LastWriteTime;
+                }
+                IEnumerable<System.IO.FileInfo> fileList = dir.GetFiles("*.*", System.IO.SearchOption.TopDirectoryOnly);
+                string ex = null;
+
+                ex = ".jpg";//Properties.Settings.Default.img;
+
+                IEnumerable<System.IO.FileInfo> fileQuery =
+                    from file in fileList
+                    where file.Extension == ex
+                    orderby file.Name
+                    select file;
+
+                //画像があるかどうかのチェック
+                if (!fileQuery.Any())
+                {
+                    return;
+                }
+
+                var newestFile =
+                    (from file in fileQuery
+                    orderby file.CreationTime
+                    select new { file.FullName, file.CreationTime }).Last();
+
+                string photo = newestFile.FullName; // ツイートする画像のパス
+                if (Properties.Settings.Default.imgpass == photo)
+                {
+                    //連投防止
+                    return;
+                }
+                else if (photo != homo)
+                {
+                    // イメージブラシの作成
+                    ImageBrush imageBrush = new ImageBrush();
+                    imageBrush.ImageSource = new System.Windows.Media.Imaging.BitmapImage(new Uri(photo, UriKind.Relative));
+                    // ブラシを背景に設定する
+                    this.Background = imageBrush;
+                    if (syaro)
                     {
-                        System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(startFolder);
-
-
-                        IEnumerable<System.IO.FileInfo> fileList = dir.GetFiles("*.*", System.IO.SearchOption.TopDirectoryOnly);
-                        string ex = null;
-
-                        ex = ".jpg";//Properties.Settings.Default.img;
-
-                        IEnumerable<System.IO.FileInfo> fileQuery =
-                            from file in fileList
-                            where file.Extension == ex
-                            orderby file.Name
-                            select file;
-
-                        var newestFile =
-                            (from file in fileQuery
-                             orderby file.CreationTime
-                             select new { file.FullName, file.CreationTime })
-                            .Last();
-
-                        string photo = newestFile.FullName; // ツイートする画像のパス
-                        if (Properties.Settings.Default.imgpass == photo)
-                        {
-                            //連投防止
-                            return;
-                        }
-
-                        else if (photo != homo)
-                        {
-                            // イメージブラシの作成
-                            ImageBrush imageBrush = new ImageBrush();
-                            imageBrush.ImageSource = new System.Windows.Media.Imaging.BitmapImage(new Uri(photo, UriKind.Relative));
-                            // ブラシを背景に設定する
-                            this.Background = imageBrush;
-                            if (syaro == true)
-                            {
-                                token.Statuses.UpdateWithMedia(
-                                    status => tweet.Text + Environment.NewLine + has.Text,
-                                    media => new FileInfo(photo));
-
-                                homo = photo;
-                                Properties.Settings.Default.imgpass = photo;
-                                tweet.Text = null;
-                            }
-                            else
-                            {
-
-                            }
-                        }
+                        token.Statuses.UpdateWithMedia(
+                        status => tweet.Text + Environment.NewLine + has.Text,
+                        media => new FileInfo(photo));
+                        homo = photo;
+                        Properties.Settings.Default.imgpass = photo;
+                        tweet.Text = null;
                     }
-                    catch (Exception)
-                    {
-                    }
+                }
+            }
+            catch (Exception)
+            {
+            }
         }
 
         //手動ツイート
