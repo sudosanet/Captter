@@ -144,6 +144,7 @@ namespace captter3
             string startFolder = Properties.Settings.Default.pass;
             try
             {
+                //別スレッドで実行してUIのフリーズをなくすべき？
                 System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(startFolder);
 
                 //ディレクトリに画像が書き込まれているかどうかのチェック

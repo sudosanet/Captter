@@ -41,6 +41,12 @@ namespace captter3
         int stc = 0;
         private void Image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            /*非同期にすべき
+            System.IO.Stream inari = Properties.Resources.inari;
+            System.Media.SoundPlayer player = new System.Media.SoundPlayer(inari);
+            player.PlaySync();
+            player.Dispose();
+            */
             stc++;
             ver.Opacity = 100;
             if(stc==1)
