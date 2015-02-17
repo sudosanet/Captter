@@ -10,13 +10,14 @@
             </TextBox.Background>
         </TextBox>
         <Button Content="設定" HorizontalAlignment="Left" Margin="254,123,0,0" Width="46" Background="#FFFDF9B2" Click="Button_Click" Loaded="Button_Loaded"/>
-        <TextBlock HorizontalAlignment="Center" Margin="0,148,115,1" TextWrapping="Wrap" VerticalAlignment="Center" Width="185" Height="20" TextOptions.TextHintingMode="Animated" Padding="0">
+        <TextBlock HorizontalAlignment="Center" Margin="0,148,161,1" TextWrapping="Wrap" VerticalAlignment="Center" Width="139" Height="20" TextOptions.TextHintingMode="Animated" Padding="0">
             <TextBlock.Background>
                 <SolidColorBrush Color="#FFE0C6A3" Opacity="0.4"/>
             </TextBlock.Background><Run Text="ここをつかんで移動"/><InlineUIContainer>
         	</InlineUIContainer></TextBlock>
         <Button Content="×" HorizontalAlignment="Left" Margin="181,148,0,0" VerticalAlignment="Top" Width="31" Background="#FFFD8798" FontSize="14" Click="Button_Click_1"/>
         <Button x:Name="mode" Content="false" HorizontalAlignment="Left" Margin="212,148,0,0" Width="42" Background="#FF555464" Foreground="#FFE3D2CB" Click="Button_Click_2"/>
+        <Button x:Name="keep" Content="KEEP" HorizontalAlignment="Left" Margin="139,148,0,0" VerticalAlignment="Top" Width="42" Height="21" Click="keep_Click"/>
 
     </Grid>
 </Window>

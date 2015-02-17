@@ -289,5 +289,10 @@ namespace captter3
             //string i = Convert.ToString(dpiY);
             //System.Windows.MessageBox.Show(i);
         }
+
+        private void keep_Click(object sender, RoutedEventArgs e)
+        {
+           
+        }
     }
 }
