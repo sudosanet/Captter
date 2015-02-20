@@ -1,5 +1,5 @@
 # Captter
-Twitter実況を補助するソフト
+Twitter実況を補助するソフト<br>
 まずtvtest等のキャプチャ画像が保存される場所を指定します
 
  
