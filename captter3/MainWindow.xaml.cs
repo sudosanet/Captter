@@ -125,19 +125,18 @@ namespace captter3
                     System.Windows.MessageBox.Show("エラーが発生しました、もう一度やり直してください","info");
                 }
             }
-            else
-            {
-                //timer
-                DispatcherTimer testTimer;
-                testTimer = new DispatcherTimer();
-                testTimer.Interval = new TimeSpan(0, 0, 1);
-                testTimer.Tick += new EventHandler(testTimer_Tick);
-                testTimer.Start();
-                token = Tokens.Create(CK,
-                    CS,
-                    Properties.Settings.Default.AccessToken,
-                    Properties.Settings.Default.TokenSecret);
-            }
+
+            //timer
+            DispatcherTimer testTimer;
+            testTimer = new DispatcherTimer();
+            testTimer.Interval = new TimeSpan(0, 0, 1);
+            testTimer.Tick += new EventHandler(testTimer_Tick);
+            testTimer.Start();
+            token = Tokens.Create(CK,
+                CS,
+                Properties.Settings.Default.AccessToken,
+                Properties.Settings.Default.TokenSecret);
+
         }
         public void testTimer_Tick(object sender, EventArgs e)
         {
@@ -258,8 +257,13 @@ namespace captter3
                             tweet.Text = null;
                     }
                 }
-                catch (Exception)
+                catch (NullReferenceException)
                 {
+                    System.Windows.MessageBox.Show("フォルダに新しく画像が書きこまれてないようです。画像を書き込んでから実行してください", "注意");
+                }
+                catch(Exception)
+                {
+
                 }
             }
         }
