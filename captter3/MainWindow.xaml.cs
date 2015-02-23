@@ -49,7 +49,7 @@ namespace captter3
         bool syaro = false;
         //連投防止
         string homo;
-        DateTime dirWriteDateTime;
+        DateTime dirWriteDateTime = new DateTime(0);
         //coreTweet
         public CoreTweet.OAuth.OAuthSession session;
         public CoreTweet.Tokens token;
