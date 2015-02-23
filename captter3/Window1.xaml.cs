@@ -37,6 +37,16 @@ namespace captter3
         {
             var hwnd = new WindowInteropHelper(this).Handle;
             SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) & ~WS_SYSMENU);
+            //form obuject load
+            if(Properties.Settings.Default.img==".jpg")
+            {
+                jpg.IsChecked = true;
+            }
+            else if(Properties.Settings.Default.img==".png")
+            {
+                png.IsChecked = true;
+            }
+            pathbox.Text = Properties.Settings.Default.pass;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -46,13 +56,31 @@ namespace captter3
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
+            if(jpg.IsChecked==true)
+            {
+                Properties.Settings.Default.img = ".jpg";
+            }
+            else if (png.IsChecked==true)
+            {
+                Properties.Settings.Default.img =".png";
+            }
+            else
+            {
+                return;
+            }
+            //path
+            Properties.Settings.Default.pass = pathbox.Text;
+
+            Properties.Settings.Default.Save();
+            this.Close();
 
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             Properties.Settings.Default.Reset();
-            //Application();
+            MessageBox.Show("設定を消去しました。終了します", "情報");
+            Environment.Exit(0);
         }
 
         private void cv_Selected(object sender, RoutedEventArgs e)
@@ -69,6 +97,25 @@ namespace captter3
                 EE f = new EE();
 
                 f.ShowDialog();
+            }
+        }
+
+        private void tana3n_Click(object sender, RoutedEventArgs e)
+        {
+            //FolderBrowserDialogクラスのインスタンスを作成
+            System.Windows.Forms.FolderBrowserDialog fbd = new System.Windows.Forms.FolderBrowserDialog();
+            //上部に表示する説明テキストを指定する
+            fbd.Description = "tvtestの画像がキャプチャされるフォルダを指定してください。";
+            //ルートフォルダを指定する
+            fbd.RootFolder = Environment.SpecialFolder.Desktop;
+            fbd.SelectedPath = @"C:\";
+            //ユーザーが新しいフォルダを作成できるようにする
+            fbd.ShowNewFolderButton = true;
+            //ダイアログを表示する
+            if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                //選択されたフォルダをtxetbox3に代入
+                pathbox.Text = fbd.SelectedPath;
             }
         }
 

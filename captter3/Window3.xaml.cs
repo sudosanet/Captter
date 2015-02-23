@@ -62,6 +62,18 @@ namespace captter3
 
         private void next_Click(object sender, RoutedEventArgs e)
         {
+            if(jpg.IsChecked==true)
+            {
+                Properties.Settings.Default.img = ".jpg";
+            }
+            else if (png.IsChecked==true)
+            {
+                Properties.Settings.Default.img = "png";
+            }
+            else
+            {
+                return;
+            }
             Properties.Settings.Default.Save();
             var win = new Window4();
             win.Show();

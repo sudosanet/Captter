@@ -16,9 +16,8 @@
         <Label x:Name="pass" Content="C:\" HorizontalAlignment="Left" Margin="66,42,0,0" VerticalAlignment="Top" Height="25" Width="302"/>
         <Button x:Name="next" Content="次へ" HorizontalAlignment="Left" Margin="283,119,0,0" VerticalAlignment="Top" Width="75" IsEnabled="False" Click="next_Click" Height="19"/>
         <Label Content="検索する画像の拡張子" HorizontalAlignment="Left" Margin="10,74,0,0" VerticalAlignment="Top"/>
-        <ComboBox HorizontalAlignment="Left" Margin="10,104,0,0" VerticalAlignment="Top" Width="120">
-            <Button Content="jpg" IsDefault="True"/>
-        </ComboBox>
+        <RadioButton x:Name="jpg" Content=".jpg" HorizontalAlignment="Left" Margin="20,104,0,0" VerticalAlignment="Top" IsChecked="True"/>
+        <RadioButton x:Name="png" Content=".png" HorizontalAlignment="Left" Margin="20,123,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

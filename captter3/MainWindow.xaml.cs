@@ -158,7 +158,7 @@ namespace captter3
                 IEnumerable<System.IO.FileInfo> fileList = dir.GetFiles("*.*", System.IO.SearchOption.TopDirectoryOnly);
                 string ex = null;
 
-                ex = ".jpg";//Properties.Settings.Default.img;
+                ex = Properties.Settings.Default.img;
 
                 IEnumerable<System.IO.FileInfo> fileQuery =
                     from file in fileList
@@ -220,7 +220,7 @@ namespace captter3
                     IEnumerable<System.IO.FileInfo> fileList = dir.GetFiles("*.*", System.IO.SearchOption.TopDirectoryOnly);
                     string ex = null;
 
-                    ex = ".jpg";//Properties.Settings.Default.img;
+                    ex = Properties.Settings.Default.img;
 
                     IEnumerable<System.IO.FileInfo> fileQuery =
                         from file in fileList
