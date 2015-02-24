@@ -21,7 +21,12 @@
             </TabItem>
             <TabItem Header="高度な設定" HorizontalAlignment="Left" Height="19" VerticalAlignment="Top" Width="73" Margin="-2,-2,-11,0">
                 <Grid Background="#FFE5E5E5">
-                    <Button Content="ALLリセット" HorizontalAlignment="Left" Margin="31,43,0,0" VerticalAlignment="Top" Width="478" Height="216" Click="Button_Click_2"/>
+                    <CheckBox x:Name="acp" Content="私は危険を承知しました" HorizontalAlignment="Left" Margin="16,38,0,0" VerticalAlignment="Top" Click="checkBox_Checked"/>
+                    <Label x:Name="label" Content="ここにある設定を変更した場合、プログラムが動作しなくなる可能性があります" HorizontalAlignment="Left" Margin="16,10,0,0" VerticalAlignment="Top"/>
+                    <Grid x:Name="high" HorizontalAlignment="Left" Height="215" Margin="10,61,0,0" VerticalAlignment="Top" Width="525" IsEnabled="False">
+                        <Button x:Name="reset" Content="初期化" HorizontalAlignment="Left" VerticalAlignment="Top" Width="116" Height="37" Click="Button_Click_2" Margin="10,168,0,0"/>
+                        <Label x:Name="label1" Content="画像の検索間隔" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                    </Grid>
                 </Grid>
             </TabItem>
             <TabItem Header="情報" HorizontalAlignment="Left" Height="19" VerticalAlignment="Top" Width="60">
@@ -32,11 +37,11 @@
                                 <GridViewColumn/>
                             </GridView>
                         </ListView.View>
-                        <ListViewItem Content="ソフトウェア更新(できない)" Margin="0" Height="53" FontSize="22" />
+                        <ListViewItem Content="ソフトウェア更新(できない)" Margin="0" Height="53" FontSize="22" Selected="ListViewItem_Selected" />
                         <ListViewItem x:Name="cv" Content="Capter version:3.1 beta" Margin="0" Height="53" FontSize="22" Selected="cv_Selected" MouseLeftButtonUp="cv_MouseLeftButtonUp"/>
                         <ListViewItem Content="CoreTweet version:0.4.0.6231" Margin="0" Height="53" FontSize="22"/>
                         <ListViewItem Content="License:LGPLv3" Margin="0" Height="53" FontSize="22"/>
-                        <ListViewItem Content="build date:14/01/2015" Margin="0" Height="53" FontSize="22"/>
+                        <ListViewItem x:Name="date" Content="build date:14/01/2015" Margin="0" Height="53" FontSize="22"/>
                     </ListView>
                 </Grid>
             </TabItem>

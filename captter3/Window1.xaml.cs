@@ -12,6 +12,7 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Forms;
 
 namespace captter3
 {
@@ -47,6 +48,11 @@ namespace captter3
                 png.IsChecked = true;
             }
             pathbox.Text = Properties.Settings.Default.pass;
+
+            //bild date
+            var info = new System.IO.FileInfo(System.Windows.Forms.Application.ExecutablePath);
+            string date = Convert.ToString(info.CreationTime);//LastWriteTime
+            this.date.Content = "build date:" + date;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -79,7 +85,7 @@ namespace captter3
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             Properties.Settings.Default.Reset();
-            MessageBox.Show("設定を消去しました。終了します", "情報");
+            System.Windows.MessageBox.Show("設定を消去しました。終了します", "情報");
             Environment.Exit(0);
         }
 
@@ -119,7 +125,25 @@ namespace captter3
             }
         }
 
+        private void ListViewItem_Selected(object sender, RoutedEventArgs e)
+        {
+            /*
+            アップデート機能実装予定仕様
 
+            サーバー(11514.jpnなど)からJSONなどでデーターを受け取る
+            データーの内容は
+            ・最新のバージョン
+            ・更新内容
+            ・ファイルのURL
+            内部バージョンと照らし合わせて最新バージョンのほうが数が大きい値の場合はアップデート確認画面を表示
+            そのさい更新内容を表示する
+            その後URLからファイルをダウンロードしてファイルを書き換え再起動
+            */
+        }
 
+        private void checkBox_Checked(object sender, RoutedEventArgs e)
+        {
+            high.IsEnabled = Convert.ToBoolean(acp.IsChecked);
+        }
     }
 }
