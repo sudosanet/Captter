@@ -1,7 +1,7 @@
 ﻿<Window x:Class="captter3.Window4"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="チュートリアル" Height="561" Width="496" Loaded="Window_Loaded" Background="#FFFDF9B2" ResizeMode="NoResize">
+        Title="チュートリアル" Height="561" Width="496" Loaded="Window_Loaded" Background="#FFFDF9B2" ResizeMode="NoResize" Topmost="True">
     <Grid>
         <Button Content="さあ、始めよう" Margin="182,464,182,14" VerticalAlignment="Center" Height="54" Background="#E0FD8798" Click="Button_Click" FontSize="16"/>
         <Image HorizontalAlignment="Left" Height="443" VerticalAlignment="Top" Width="490" Source="無題.png" MouseLeftButtonDown="Image_MouseLeftButtonDown"/>
