@@ -16,7 +16,7 @@
                 <ImageBrush ImageSource="inari.png" Stretch="None"/>
             </Image.OpacityMask>
         </Image>
-        <TextBlock x:Name="ver" Margin="69,239,70,0" TextWrapping="Wrap" Text="Captter 3.i inari" VerticalAlignment="Top" FontSize="16" Opacity="0"/>
+        <TextBlock x:Name="ver" Margin="69,239,70,0" TextWrapping="Wrap" Text="Captter 3.1 inari" VerticalAlignment="Top" FontSize="16" Opacity="0"/>
 
     </Grid>
 </Window>
