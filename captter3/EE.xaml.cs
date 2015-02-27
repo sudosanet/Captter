@@ -55,26 +55,31 @@ namespace captter3
             }
             else if(stc==2)
             {
+                ver.Text = "あと5回";
                 st.ScaleX = 0.7;
                 st.ScaleY = 0.7;
             }
             else if (stc == 3)
             {
+                ver.Text = "あと4回";
                 st.ScaleX = 0.8;
                 st.ScaleY = 0.8;
             }
             else if (stc == 4)
             {
+                ver.Text = "あと3回";
                 st.ScaleX = 0.9;
                 st.ScaleY = 0.9;
             }
             else if (stc == 5)
             {
+                ver.Text = "あと2回";
                 st.ScaleX = 1;
                 st.ScaleY = 1;
             }
             else if (stc == 6)
             {
+                ver.Text = "ラスト";
                 st.ScaleX = 1.1;
                 st.ScaleY = 1.1;
             }
