@@ -47,7 +47,7 @@ namespace captter3
             player.Play();
             player.Dispose();
             stc++;
-            ver.Opacity = 100;
+            ver.Text = "Captter 3.1 inari";
             if(stc==1)
             {
                 st.ScaleX = 0.6;
