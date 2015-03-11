@@ -185,16 +185,26 @@ namespace captter3
                 }
                 else if (photo != homo)
                 {
-                    // イメージブラシの作成
+                    //画像の読み込み
+                    BitmapImage img = new BitmapImage();
+                    img.BeginInit();
+                    img.UriSource = new Uri(photo);
+                    img.CacheOption = BitmapCacheOption.OnLoad;
+                    img.EndInit();
                     ImageBrush imageBrush = new ImageBrush();
-                    imageBrush.ImageSource = new System.Windows.Media.Imaging.BitmapImage(new Uri(photo, UriKind.Relative));
+                    imageBrush.ImageSource = img;
+
                     // ブラシを背景に設定する
                     this.Background = imageBrush;
                     if (syaro)
                     {
-                        token.Statuses.UpdateWithMedia(
-                        status => tweet.Text + Environment.NewLine + has.Text,
+                       //tweet
+                        var mediaUploadTask = token.Media.UploadAsync(
                         media => new FileInfo(photo));
+                        mediaUploadTask.ContinueWith(uploadResult =>
+                        token.Statuses.UpdateAsync(
+                        status => tweet.Text + Environment.NewLine + has.Text,
+                        media_ids => uploadResult.Result.MediaId));
                         homo = photo;
                         Properties.Settings.Default.imgpass = photo;
                         tweet.Text = null;
@@ -243,18 +253,26 @@ namespace captter3
 
                     else if (photo != homo)
                     {
-                        // イメージブラシの作成
+                        //画像の読み込み
+                        BitmapImage img = new BitmapImage();
+                        img.BeginInit();
+                        img.UriSource = new Uri(photo);
+                        img.CacheOption = BitmapCacheOption.OnLoad;
+                        img.EndInit();
                         ImageBrush imageBrush = new ImageBrush();
-                        imageBrush.ImageSource = new System.Windows.Media.Imaging.BitmapImage(new Uri(photo, UriKind.Relative));
-                        // ブラシを背景に設定する
+                        imageBrush.ImageSource = img;
+                        //ブラシを背景に
                         this.Background = imageBrush;
-                            token.Statuses.UpdateWithMedia(
-                                status => tweet.Text + Environment.NewLine + has.Text,
-                                media => new FileInfo(photo));
-
-                            homo = photo;
-                            Properties.Settings.Default.imgpass = photo;
-                            tweet.Text = null;
+                        //tweet
+                        var mediaUploadTask = token.Media.UploadAsync(
+                        media => new FileInfo(photo));
+                        mediaUploadTask.ContinueWith(uploadResult =>
+                        token.Statuses.UpdateAsync(
+                        status => tweet.Text + Environment.NewLine + has.Text,
+                        media_ids => uploadResult.Result.MediaId));
+                        homo = photo;
+                        Properties.Settings.Default.imgpass = photo;
+                        tweet.Text = null;
                     }
                 }
                 catch (NullReferenceException)
