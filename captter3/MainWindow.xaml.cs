@@ -100,8 +100,15 @@ namespace captter3
         {
             if(!syaro)
             {
-                syaro = true;
-                mode.Content = "true";
+                MessageBoxResult result = System.Windows.MessageBox.Show("この機能はあなたのタイムラインにいる人に迷惑がかかる可能性があります。有効にしますか？", "警告",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        syaro = true;
+                        mode.Content = "true";
+                    }
+
             }
             else
             {
