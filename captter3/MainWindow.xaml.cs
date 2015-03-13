@@ -100,8 +100,15 @@ namespace captter3
         {
             if(!syaro)
             {
-                syaro = true;
-                mode.Content = "true";
+                MessageBoxResult result = System.Windows.MessageBox.Show("この機能はあなたのタイムラインにいる人に迷惑がかかる可能性があります。\n\n有効にしますか？", "警告",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        syaro = true;
+                        mode.Content = "true";
+                    }
+
             }
             else
             {
@@ -185,20 +192,35 @@ namespace captter3
                 }
                 else if (photo != homo)
                 {
-                    // イメージブラシの作成
-                    ImageBrush imageBrush = new ImageBrush();
-                    imageBrush.ImageSource = new System.Windows.Media.Imaging.BitmapImage(new Uri(photo, UriKind.Relative));
-                    // ブラシを背景に設定する
-                    this.Background = imageBrush;
-                    if (syaro)
-                    {
-                        token.Statuses.UpdateWithMedia(
-                        status => tweet.Text + Environment.NewLine + has.Text,
-                        media => new FileInfo(photo));
+                        //画像の読み込み
+                        BitmapImage img = new BitmapImage();
+                        img.BeginInit();
+                        img.UriSource = new Uri(photo);
+                        img.CacheOption = BitmapCacheOption.OnLoad;
+                        img.EndInit();
+                        ImageBrush imageBrush = new ImageBrush();
+                        imageBrush.ImageSource = img;
+                        //ブラシを背景に
+                        this.Background = imageBrush;
+                        
+                        //tweet
+                        var mediaUploadTask = token.Media.UploadAsync(
+                            media => new FileInfo(photo));
+                        string statusText = tweet.Text;
+                        string hashtagText = has.Text;
+                        mediaUploadTask.ContinueWith((x) => 
+                            {
+                                if (x.IsCompleted)
+                                {
+                                    token.Statuses.UpdateAsync(
+                                        status => statusText + Environment.NewLine + hashtagText,
+                                        media_ids => x.Result.MediaId);
+                                }
+                            }, TaskScheduler.FromCurrentSynchronizationContext());
                         homo = photo;
                         Properties.Settings.Default.imgpass = photo;
-                        tweet.Text = null;
-                    }
+                        tweet.Clear();
+
                 }
             }
             catch (Exception)
@@ -243,18 +265,34 @@ namespace captter3
 
                     else if (photo != homo)
                     {
-                        // イメージブラシの作成
+                        //画像の読み込み
+                        BitmapImage img = new BitmapImage();
+                        img.BeginInit();
+                        img.UriSource = new Uri(photo);
+                        img.CacheOption = BitmapCacheOption.OnLoad;
+                        img.EndInit();
                         ImageBrush imageBrush = new ImageBrush();
-                        imageBrush.ImageSource = new System.Windows.Media.Imaging.BitmapImage(new Uri(photo, UriKind.Relative));
-                        // ブラシを背景に設定する
+                        imageBrush.ImageSource = img;
+                        //ブラシを背景に
                         this.Background = imageBrush;
-                            token.Statuses.UpdateWithMedia(
-                                status => tweet.Text + Environment.NewLine + has.Text,
-                                media => new FileInfo(photo));
-
-                            homo = photo;
-                            Properties.Settings.Default.imgpass = photo;
-                            tweet.Text = null;
+                        
+                        //tweet
+                        var mediaUploadTask = token.Media.UploadAsync(
+                            media => new FileInfo(photo));
+                        string statusText = tweet.Text;
+                        string hashtagText = has.Text;
+                        mediaUploadTask.ContinueWith((x) => 
+                            {
+                                if (x.IsCompleted)
+                                {
+                                    token.Statuses.UpdateAsync(
+                                        status => statusText + Environment.NewLine + hashtagText,
+                                        media_ids => x.Result.MediaId);
+                                }
+                            }, TaskScheduler.FromCurrentSynchronizationContext());
+                        homo = photo;
+                        Properties.Settings.Default.imgpass = photo;
+                        tweet.Clear();
                     }
                 }
                 catch (NullReferenceException)
