@@ -222,6 +222,7 @@ namespace captter3
                             }, TaskScheduler.FromCurrentSynchronizationContext());
                         homo = photo;
                         Properties.Settings.Default.imgpass = photo;
+                        Properties.Settings.Default.Save();
                         tweet.Clear();
                     }
                 }
@@ -296,6 +297,7 @@ namespace captter3
                             }, TaskScheduler.FromCurrentSynchronizationContext());
                         homo = photo;
                         Properties.Settings.Default.imgpass = photo;
+                        Properties.Settings.Default.Save();
                         tweet.Clear();
                     }
                 }
