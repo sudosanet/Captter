@@ -53,8 +53,7 @@ namespace captter3
         //coreTweet
         public CoreTweet.OAuth.OAuthSession session;
         public CoreTweet.Tokens token;
-        public const string CK = "bTLiIE3LOyadvojbBf5AEXIsU";
-        public const string CS = "ztjWDrWJ9YOsfPKMRw9Q0uqDywEjmmCKSIIK6eoXP81tWYe9H6";
+
         public MainWindow()
         {
             InitializeComponent();
@@ -139,8 +138,7 @@ namespace captter3
             testTimer.Interval = new TimeSpan(0, 0, 1);
             testTimer.Tick += new EventHandler(testTimer_Tick);
             testTimer.Start();
-            token = Tokens.Create(CK,
-                CS,
+            token = Tokens.Create(twitter.CK,twitter.CS,
                 Properties.Settings.Default.AccessToken,
                 Properties.Settings.Default.TokenSecret);
 

@@ -24,8 +24,6 @@ namespace captter3
         //coreTweet
         public CoreTweet.OAuth.OAuthSession session;
         public CoreTweet.Tokens token;
-        public const string CK = "bTLiIE3LOyadvojbBf5AEXIsU";
-        public const string CS = "ztjWDrWJ9YOsfPKMRw9Q0uqDywEjmmCKSIIK6eoXP81tWYe9H6";
         public string code;
 
         public Window2()
@@ -49,7 +47,7 @@ namespace captter3
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             //token発行
-            session = OAuth.Authorize(CK, CS);
+            session = OAuth.Authorize(twitter.CK, twitter.CS);
             string url = session.AuthorizeUri.ToString();
             System.Diagnostics.Process.Start(url);
             pin.IsEnabled = true;
