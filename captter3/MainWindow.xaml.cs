@@ -100,7 +100,7 @@ namespace captter3
         {
             if(!syaro)
             {
-                MessageBoxResult result = System.Windows.MessageBox.Show("この機能はあなたのタイムラインにいる人に迷惑がかかる可能性があります。有効にしますか？", "警告",
+                MessageBoxResult result = System.Windows.MessageBox.Show("この機能はあなたのタイムラインにいる人に迷惑がかかる可能性があります。\n\n有効にしますか？", "警告",
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Warning);
                     if (result == MessageBoxResult.Yes)
@@ -192,30 +192,35 @@ namespace captter3
                 }
                 else if (photo != homo)
                 {
-                    //画像の読み込み
-                    BitmapImage img = new BitmapImage();
-                    img.BeginInit();
-                    img.UriSource = new Uri(photo);
-                    img.CacheOption = BitmapCacheOption.OnLoad;
-                    img.EndInit();
-                    ImageBrush imageBrush = new ImageBrush();
-                    imageBrush.ImageSource = img;
-
-                    // ブラシを背景に設定する
-                    this.Background = imageBrush;
-                    if (syaro)
-                    {
-                       //tweet
+                        //画像の読み込み
+                        BitmapImage img = new BitmapImage();
+                        img.BeginInit();
+                        img.UriSource = new Uri(photo);
+                        img.CacheOption = BitmapCacheOption.OnLoad;
+                        img.EndInit();
+                        ImageBrush imageBrush = new ImageBrush();
+                        imageBrush.ImageSource = img;
+                        //ブラシを背景に
+                        this.Background = imageBrush;
+                        
+                        //tweet
                         var mediaUploadTask = token.Media.UploadAsync(
-                        media => new FileInfo(photo));
-                        mediaUploadTask.ContinueWith(uploadResult =>
-                        token.Statuses.UpdateAsync(
-                        status => tweet.Text + Environment.NewLine + has.Text,
-                        media_ids => uploadResult.Result.MediaId));
+                            media => new FileInfo(photo));
+                        string statusText = tweet.Text;
+                        string hashtagText = has.Text;
+                        mediaUploadTask.ContinueWith((x) => 
+                            {
+                                if (x.IsCompleted)
+                                {
+                                    token.Statuses.UpdateAsync(
+                                        status => statusText + Environment.NewLine + hashtagText,
+                                        media_ids => x.Result.MediaId);
+                                }
+                            }, TaskScheduler.FromCurrentSynchronizationContext());
                         homo = photo;
                         Properties.Settings.Default.imgpass = photo;
-                        tweet.Text = null;
-                    }
+                        tweet.Clear();
+
                 }
             }
             catch (Exception)
