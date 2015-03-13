@@ -17,6 +17,7 @@
                     <Label Content="検索フォルダー" HorizontalAlignment="Left" Margin="10,78,0,0" VerticalAlignment="Top"/>
                     <TextBox x:Name="pathbox" HorizontalAlignment="Left" Height="23" Margin="10,103,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="227"/>
                     <Button x:Name="tana3n" Content="参照" HorizontalAlignment="Left" Margin="242,103,0,0" VerticalAlignment="Top" Width="56" Height="23" Click="tana3n_Click"/>
+                    <CheckBox x:Name="syaro" Content="シャロモード切替時に警告を表示しない" Margin="10,131,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"  />
                 </Grid>
             </TabItem>
             <TabItem Header="高度な設定" HorizontalAlignment="Left" Height="19" VerticalAlignment="Top" Width="73" Margin="-2,-2,-11,0">
