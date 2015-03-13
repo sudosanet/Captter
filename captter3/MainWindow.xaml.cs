@@ -192,23 +192,25 @@ namespace captter3
                 }
                 else if (photo != homo)
                 {
-                        //画像の読み込み
-                        BitmapImage img = new BitmapImage();
-                        img.BeginInit();
-                        img.UriSource = new Uri(photo);
-                        img.CacheOption = BitmapCacheOption.OnLoad;
-                        img.EndInit();
-                        ImageBrush imageBrush = new ImageBrush();
-                        imageBrush.ImageSource = img;
-                        //ブラシを背景に
-                        this.Background = imageBrush;
-                        
+                    //画像の読み込み
+                    BitmapImage img = new BitmapImage();
+                    img.BeginInit();
+                    img.UriSource = new Uri(photo);
+                    img.CacheOption = BitmapCacheOption.OnLoad;
+                    img.EndInit();
+                    ImageBrush imageBrush = new ImageBrush();
+                    imageBrush.ImageSource = img;
+                    //ブラシを背景に
+                    this.Background = imageBrush;
+
+                    if (syaro)
+                    {
                         //tweet
                         var mediaUploadTask = token.Media.UploadAsync(
                             media => new FileInfo(photo));
                         string statusText = tweet.Text;
                         string hashtagText = has.Text;
-                        mediaUploadTask.ContinueWith((x) => 
+                        mediaUploadTask.ContinueWith((x) =>
                             {
                                 if (x.IsCompleted)
                                 {
@@ -220,7 +222,7 @@ namespace captter3
                         homo = photo;
                         Properties.Settings.Default.imgpass = photo;
                         tweet.Clear();
-
+                    }
                 }
             }
             catch (Exception)
