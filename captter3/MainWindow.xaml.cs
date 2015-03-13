@@ -185,6 +185,18 @@ namespace captter3
                     select new { file.FullName, file.CreationTime }).Last();
 
                 string photo = newestFile.FullName; // ツイートする画像のパス
+
+                //画像の読み込み
+                BitmapImage img = new BitmapImage();
+                img.BeginInit();
+                img.UriSource = new Uri(photo);
+                img.CacheOption = BitmapCacheOption.OnLoad;
+                img.EndInit();
+                ImageBrush imageBrush = new ImageBrush();
+                imageBrush.ImageSource = img;
+                //ブラシを背景に
+                this.Background = imageBrush;
+
                 if (Properties.Settings.Default.imgpass == photo)
                 {
                     //連投防止
@@ -192,17 +204,6 @@ namespace captter3
                 }
                 else if (photo != homo)
                 {
-                    //画像の読み込み
-                    BitmapImage img = new BitmapImage();
-                    img.BeginInit();
-                    img.UriSource = new Uri(photo);
-                    img.CacheOption = BitmapCacheOption.OnLoad;
-                    img.EndInit();
-                    ImageBrush imageBrush = new ImageBrush();
-                    imageBrush.ImageSource = img;
-                    //ブラシを背景に
-                    this.Background = imageBrush;
-
                     if (syaro)
                     {
                         //tweet
@@ -259,6 +260,18 @@ namespace captter3
                         .Last();
 
                     string photo = newestFile.FullName; // ツイートする画像のパス
+
+                    //画像の読み込み
+                    BitmapImage img = new BitmapImage();
+                    img.BeginInit();
+                    img.UriSource = new Uri(photo);
+                    img.CacheOption = BitmapCacheOption.OnLoad;
+                    img.EndInit();
+                    ImageBrush imageBrush = new ImageBrush();
+                    imageBrush.ImageSource = img;
+                    //ブラシを背景に
+                    this.Background = imageBrush;
+
                     if (Properties.Settings.Default.imgpass == photo)
                     {
                         //連投防止
@@ -266,18 +279,7 @@ namespace captter3
                     }
 
                     else if (photo != homo)
-                    {
-                        //画像の読み込み
-                        BitmapImage img = new BitmapImage();
-                        img.BeginInit();
-                        img.UriSource = new Uri(photo);
-                        img.CacheOption = BitmapCacheOption.OnLoad;
-                        img.EndInit();
-                        ImageBrush imageBrush = new ImageBrush();
-                        imageBrush.ImageSource = img;
-                        //ブラシを背景に
-                        this.Background = imageBrush;
-                        
+                    {   
                         //tweet
                         var mediaUploadTask = token.Media.UploadAsync(
                             media => new FileInfo(photo));
