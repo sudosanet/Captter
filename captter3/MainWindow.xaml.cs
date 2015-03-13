@@ -270,16 +270,24 @@ namespace captter3
                         imageBrush.ImageSource = img;
                         //ブラシを背景に
                         this.Background = imageBrush;
+                        
                         //tweet
                         var mediaUploadTask = token.Media.UploadAsync(
-                        media => new FileInfo(photo));
-                        mediaUploadTask.ContinueWith(uploadResult =>
-                        token.Statuses.UpdateAsync(
-                        status => tweet.Text + Environment.NewLine + has.Text,
-                        media_ids => uploadResult.Result.MediaId));
+                            media => new FileInfo(photo));
+                        string statusText = tweet.Text;
+                        string hashtagText = has.Text;
+                        mediaUploadTask.ContinueWith((x) => 
+                            {
+                                if (x.IsCompleted)
+                                {
+                                    token.Statuses.UpdateAsync(
+                                        status => statusText + Environment.NewLine + hashtagText,
+                                        media_ids => x.Result.MediaId);
+                                }
+                            }, TaskScheduler.FromCurrentSynchronizationContext());
                         homo = photo;
                         Properties.Settings.Default.imgpass = photo;
-                        tweet.Text = null;
+                        tweet.Clear();
                     }
                 }
                 catch (NullReferenceException)
