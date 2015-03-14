@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,6 +20,7 @@ using CoreTweet.Streaming;
 using System.Runtime.InteropServices;
 using System.Windows.Threading;
 using System.Security.Cryptography;
+using captter3.Core;
 
 
 //tana3nはホモ
@@ -49,11 +51,13 @@ namespace captter3
         bool syaro = false;
         //連投防止
         string homo = Properties.Settings.Default.imgpass;
-        string backgroundPhotoFileName = null;
-        DateTime dirWriteDateTime = new DateTime(0);
+        //壁紙の画像のファイルパス
+        string backgroundImageFileName = null;
         //coreTweet
         public CoreTweet.OAuth.OAuthSession session;
         public CoreTweet.Tokens token;
+        //画像検索
+        private ImageSearch imageSearch = new ImageSearch();
 
         public MainWindow()
         {
@@ -141,62 +145,21 @@ namespace captter3
                 }
             }
 
-            //timer
-            DispatcherTimer testTimer;
-            testTimer = new DispatcherTimer();
-            testTimer.Interval = new TimeSpan(0, 0, 1);
-            testTimer.Tick += new EventHandler(testTimer_Tick);
-            testTimer.Start();
             token = Tokens.Create(twitter.CK,twitter.CS,
                 Properties.Settings.Default.AccessToken,
                 Properties.Settings.Default.TokenSecret);
 
+            imageSearch.foundNewImage += ImageSearch_NewImageFound;
+            imageSearch.Start();
         }
 
         /// <summary>
-        /// 画像の検索
-        /// 新しい画像が正しく発見されたときのみ画像ファイルの絶対パスを返す
-        /// </summary>
-        /// <returns>画像ファイルの絶対パス</returns>
-        private string findLatestPhoto()
-        {
-            var dir = new DirectoryInfo(Properties.Settings.Default.pass);
-
-            //ディレクトリの最終書き込み時間のチェック
-            if (dir.LastWriteTime.CompareTo(dirWriteDateTime) == 0)
-            {
-                return backgroundPhotoFileName;
-            }
-            else
-            {
-                dirWriteDateTime = dir.LastWriteTime;
-            }
-
-            //画像ファイルの検索
-            var files = dir.GetFiles("*" + Properties.Settings.Default.img);
-
-            if (!files.Any())
-            {
-                throw new System.IO.FileNotFoundException("フォルダに画像がありませんでした。");
-            }
-
-            //画像ファイルを作成日時の順で並び替える
-            Array.Sort(files,
-                (FileInfo fileA, FileInfo fileB) =>
-                {
-                    return DateTime.Compare(fileA.CreationTime, fileB.CreationTime);
-                });
-
-            return files.Last().FullName;
-        }
-
-        /// <summary>
-        /// 背景画像の更新
+        /// 背景画像の更新をします。
         /// </summary>
         /// <param name="photoFileName">画像ファイルのパス</param>
-        private void updateBackground(string photoFileName)
+        private void UpdateBackground(string photoFileName)
         {
-            if (backgroundPhotoFileName != photoFileName)
+            if (backgroundImageFileName != photoFileName)
             {
                 //画像の読み込み
                 var img = new BitmapImage();
@@ -210,15 +173,15 @@ namespace captter3
                 // ブラシを背景に設定する
                 this.Background = imageBrush;
 
-                backgroundPhotoFileName = photoFileName;
+                backgroundImageFileName = photoFileName;
             }
         }
 
         /// <summary>
-        /// ツイート
+        /// ツイートします。
         /// </summary>
         /// <param name="photoFileName">画像ファイルのパス</param>
-        private void statusesUpdate(string photoFileName)
+        private void StatusesUpdate(string photoFileName)
         {
             var mediaUploadTask = token.Media.UploadAsync(
                 media => new FileInfo(photoFileName));
@@ -238,20 +201,26 @@ namespace captter3
             tweet.Clear();
         }
 
-        public void testTimer_Tick(object sender, EventArgs e)
+        /// <summary>
+        /// 画像が見つかったときの動作
+        /// </summary>
+        private void ImageSearch_NewImageFound(object sender, Core.FoundNewImageEventArgs e)
         {
-            string photo;
-            try
+            if (e.FileName != null)
             {
-                photo = findLatestPhoto(); //ツイートする画像のパス
+                if (Dispatcher.CheckAccess())
+                {
+                    UpdateBackground(e.FileName);
+                    if (syaro && homo != e.FileName) StatusesUpdate(e.FileName);
+                }
+                else
+                {
+                    Dispatcher.Invoke(new Action(() =>
+                    {
+                        ImageSearch_NewImageFound(sender, e);
+                    }));
+                }
             }
-            catch (Exception)
-            {
-                return;
-            }
-
-            updateBackground(photo);
-            if (syaro && homo != photo) statusesUpdate(photo);
         }
 
         //手動ツイート
@@ -259,21 +228,12 @@ namespace captter3
         {
             if (e.Key == Key.LeftCtrl)
             {
-                string photo;
-                try
+                string image = imageSearch.Search();
+                if (image != null)
                 {
-                    photo = findLatestPhoto();
+                    UpdateBackground(image);
+                    if (homo != image) StatusesUpdate(image);
                 }
-                catch (Exception)
-                {
-                    System.Windows.MessageBox.Show(
-                        "フォルダに新しく画像が書きこまれてないようです。画像を書き込んでから実行してください",
-                        "注意");
-                    return;
-                }
-                
-                updateBackground(photo);
-                if (homo != photo) statusesUpdate(photo);
             }
         }
 
