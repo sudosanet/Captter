@@ -145,9 +145,6 @@
     <Resource Include="無題.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="karen.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\inari.wav" />
   </ItemGroup>
   <ItemGroup>

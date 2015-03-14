@@ -8,20 +8,9 @@ namespace captter3.Core
 {
     public class imagesearch
     {
-               string startFolder = Properties.Settings.Default.pass;
-
-                        //別スレッドで実行してUIのフリーズをなくすべき？
-                System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(startFolder);
-
-                //ディレクトリに画像が書き込まれているかどうかのチェック
-                if (dirWriteDateTime == dir.LastWriteTime)
-                {
-                    return;
-                }
-                else
-                {
-                    dirWriteDateTime = dir.LastWriteTime;
-                }
+        public void img (object sender, EventArgs e)
+        {
+                System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(Properties.Settings.Default.pass);
                 IEnumerable<System.IO.FileInfo> fileList = dir.GetFiles("*.*", System.IO.SearchOption.TopDirectoryOnly);
                 string ex = null;
 
@@ -45,17 +34,7 @@ namespace captter3.Core
                     select new { file.FullName, file.CreationTime }).Last();
 
                 string photo = newestFile.FullName; // ツイートする画像のパス
-
-                //画像の読み込み
-                BitmapImage img = new BitmapImage();
-                img.BeginInit();
-                img.UriSource = new Uri(photo);
-                img.CacheOption = BitmapCacheOption.OnLoad;
-                img.EndInit();
-                ImageBrush imageBrush = new ImageBrush();
-                imageBrush.ImageSource = img;
-                //ブラシを背景に
-                this.Background = imageBrush;
+        }
 
     }
 }
