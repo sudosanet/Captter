@@ -48,6 +48,7 @@ namespace captter3
                 png.IsChecked = true;
             }
             pathbox.Text = Properties.Settings.Default.pass;
+            syaro.IsChecked = Properties.Settings.Default.AllowSyaromode;
 
             //bild date
             var info = new System.IO.FileInfo(System.Windows.Forms.Application.ExecutablePath);
@@ -74,6 +75,9 @@ namespace captter3
             {
                 return;
             }
+
+            Properties.Settings.Default.AllowSyaromode =  (bool) syaro.IsChecked;
+
             //path
             Properties.Settings.Default.pass = pathbox.Text;
 
@@ -145,5 +149,6 @@ namespace captter3
         {
             high.IsEnabled = Convert.ToBoolean(acp.IsChecked);
         }
+
     }
 }
