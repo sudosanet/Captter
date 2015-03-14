@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace captter3.Core
+namespace captter3
 {
-    public class imagesearch
+    namespace Core
     {
-        public void img (object sender, EventArgs e)
+        public class imagesearch
         {
+            public void img(object sender, EventArgs e)
+            {
                 System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(Properties.Settings.Default.pass);
                 IEnumerable<System.IO.FileInfo> fileList = dir.GetFiles("*.*", System.IO.SearchOption.TopDirectoryOnly);
                 string ex = null;
@@ -30,11 +32,11 @@ namespace captter3.Core
 
                 var newestFile =
                     (from file in fileQuery
-                    orderby file.CreationTime
-                    select new { file.FullName, file.CreationTime }).Last();
+                     orderby file.CreationTime
+                     select new { file.FullName, file.CreationTime }).Last();
 
                 string photo = newestFile.FullName; // ツイートする画像のパス
+            }
         }
-
     }
 }
