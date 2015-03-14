@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,6 +20,7 @@ using CoreTweet.Streaming;
 using System.Runtime.InteropServices;
 using System.Windows.Threading;
 using System.Security.Cryptography;
+using captter3.Core;
 
 
 //tana3nはホモ
@@ -48,18 +50,20 @@ namespace captter3
     {
         bool syaro = false;
         //連投防止
-        string homo;
-        DateTime dirWriteDateTime = new DateTime(0);
+        string homo = Properties.Settings.Default.imgpass;
+        //壁紙の画像のファイルパス
+        string backgroundImageFileName = null;
         //coreTweet
         public CoreTweet.OAuth.OAuthSession session;
         public CoreTweet.Tokens token;
+        //画像検索
+        private ImageSearch imageSearch = new ImageSearch();
 
         public MainWindow()
         {
             InitializeComponent();
-
-           
         }
+
         /// <summary>
         /// 起動後にドラッグで移動できるようにする
         /// </summary>
@@ -141,101 +145,81 @@ namespace captter3
                 }
             }
 
-            //timer
-            DispatcherTimer testTimer;
-            testTimer = new DispatcherTimer();
-            testTimer.Interval = new TimeSpan(0, 0, 1);
-            testTimer.Tick += new EventHandler(testTimer_Tick);
-            testTimer.Start();
             token = Tokens.Create(twitter.CK,twitter.CS,
                 Properties.Settings.Default.AccessToken,
                 Properties.Settings.Default.TokenSecret);
 
+            imageSearch.foundNewImage += ImageSearch_NewImageFound;
+            imageSearch.Start();
         }
-        public void testTimer_Tick(object sender, EventArgs e)
-        {
-            string startFolder = Properties.Settings.Default.pass;
-            try
-            {
-                //別スレッドで実行してUIのフリーズをなくすべき？
-                System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(startFolder);
 
-                //ディレクトリに画像が書き込まれているかどうかのチェック
-                if (dirWriteDateTime == dir.LastWriteTime)
+        /// <summary>
+        /// 背景画像の更新をします。
+        /// </summary>
+        /// <param name="photoFileName">画像ファイルのパス</param>
+        private void UpdateBackground(string photoFileName)
+        {
+            if (backgroundImageFileName != photoFileName)
+            {
+                //画像の読み込み
+                var img = new BitmapImage();
+                img.BeginInit();
+                img.UriSource = new Uri(photoFileName);
+                img.CacheOption = BitmapCacheOption.OnLoad;
+                img.EndInit();
+                var imageBrush = new ImageBrush();
+                imageBrush.ImageSource = img;
+
+                // ブラシを背景に設定する
+                this.Background = imageBrush;
+
+                backgroundImageFileName = photoFileName;
+            }
+        }
+
+        /// <summary>
+        /// ツイートします。
+        /// </summary>
+        /// <param name="photoFileName">画像ファイルのパス</param>
+        private void StatusesUpdate(string photoFileName)
+        {
+            var mediaUploadTask = token.Media.UploadAsync(
+                media => new FileInfo(photoFileName));
+            string statusText = tweet.Text;
+
+            mediaUploadTask.ContinueWith((x) =>
+            {
+                if (x.IsCompleted)
                 {
-                    return;
+                    token.Statuses.UpdateAsync(
+                        status => statusText + Environment.NewLine + has.Text,
+                        media_ids => x.Result.MediaId);
+                }
+            }, TaskScheduler.FromCurrentSynchronizationContext());
+            homo = Properties.Settings.Default.imgpass = photoFileName;
+            Properties.Settings.Default.Save();
+            tweet.Clear();
+        }
+
+        /// <summary>
+        /// 画像が見つかったときの動作
+        /// </summary>
+        private void ImageSearch_NewImageFound(object sender, Core.FoundNewImageEventArgs e)
+        {
+            if (e.FileName != null)
+            {
+                if (Dispatcher.CheckAccess())
+                {
+                    UpdateBackground(e.FileName);
+                    if (syaro && homo != e.FileName) StatusesUpdate(e.FileName);
                 }
                 else
                 {
-                    dirWriteDateTime = dir.LastWriteTime;
-                }
-                IEnumerable<System.IO.FileInfo> fileList = dir.GetFiles("*.*", System.IO.SearchOption.TopDirectoryOnly);
-                string ex = null;
-
-                ex = Properties.Settings.Default.img;
-
-                IEnumerable<System.IO.FileInfo> fileQuery =
-                    from file in fileList
-                    where file.Extension == ex
-                    orderby file.Name
-                    select file;
-
-                //画像があるかどうかのチェック
-                if (!fileQuery.Any())
-                {
-                    return;
-                }
-
-                var newestFile =
-                    (from file in fileQuery
-                    orderby file.CreationTime
-                    select new { file.FullName, file.CreationTime }).Last();
-
-                string photo = newestFile.FullName; // ツイートする画像のパス
-
-                //画像の読み込み
-                BitmapImage img = new BitmapImage();
-                img.BeginInit();
-                img.UriSource = new Uri(photo);
-                img.CacheOption = BitmapCacheOption.OnLoad;
-                img.EndInit();
-                ImageBrush imageBrush = new ImageBrush();
-                imageBrush.ImageSource = img;
-                //ブラシを背景に
-                this.Background = imageBrush;
-
-                if (Properties.Settings.Default.imgpass == photo)
-                {
-                    //連投防止
-                    return;
-                }
-                else if (photo != homo)
-                {
-                    if (syaro)
+                    Dispatcher.Invoke(new Action(() =>
                     {
-                        //tweet
-                        var mediaUploadTask = token.Media.UploadAsync(
-                            media => new FileInfo(photo));
-                        string statusText = tweet.Text;
-                        string hashtagText = has.Text;
-                        mediaUploadTask.ContinueWith((x) =>
-                            {
-                                if (x.IsCompleted)
-                                {
-                                    token.Statuses.UpdateAsync(
-                                        status => statusText + Environment.NewLine + hashtagText,
-                                        media_ids => x.Result.MediaId);
-                                }
-                            }, TaskScheduler.FromCurrentSynchronizationContext());
-                        homo = photo;
-                        Properties.Settings.Default.imgpass = photo;
-                        Properties.Settings.Default.Save();
-                        tweet.Clear();
-                    }
+                        ImageSearch_NewImageFound(sender, e);
+                    }));
                 }
-            }
-            catch (Exception)
-            {
             }
         }
 
@@ -244,77 +228,11 @@ namespace captter3
         {
             if (e.Key == Key.LeftCtrl)
             {
-                string startFolder = Properties.Settings.Default.pass;
-                try
+                string image = imageSearch.Search();
+                if (image != null)
                 {
-                    System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(startFolder);
-
-
-                    IEnumerable<System.IO.FileInfo> fileList = dir.GetFiles("*.*", System.IO.SearchOption.TopDirectoryOnly);
-                    string ex = null;
-
-                    ex = Properties.Settings.Default.img;
-
-                    IEnumerable<System.IO.FileInfo> fileQuery =
-                        from file in fileList
-                        where file.Extension == ex
-                        orderby file.Name
-                        select file;
-
-                    var newestFile =
-                        (from file in fileQuery
-                         orderby file.CreationTime
-                         select new { file.FullName, file.CreationTime })
-                        .Last();
-
-                    string photo = newestFile.FullName; // ツイートする画像のパス
-
-                    //画像の読み込み
-                    BitmapImage img = new BitmapImage();
-                    img.BeginInit();
-                    img.UriSource = new Uri(photo);
-                    img.CacheOption = BitmapCacheOption.OnLoad;
-                    img.EndInit();
-                    ImageBrush imageBrush = new ImageBrush();
-                    imageBrush.ImageSource = img;
-                    //ブラシを背景に
-                    this.Background = imageBrush;
-
-                    if (Properties.Settings.Default.imgpass == photo)
-                    {
-                        //連投防止
-                        return;
-                    }
-
-                    else if (photo != homo)
-                    {   
-                        //tweet
-                        var mediaUploadTask = token.Media.UploadAsync(
-                            media => new FileInfo(photo));
-                        string statusText = tweet.Text;
-                        string hashtagText = has.Text;
-                        mediaUploadTask.ContinueWith((x) => 
-                            {
-                                if (x.IsCompleted)
-                                {
-                                    token.Statuses.UpdateAsync(
-                                        status => statusText + Environment.NewLine + hashtagText,
-                                        media_ids => x.Result.MediaId);
-                                }
-                            }, TaskScheduler.FromCurrentSynchronizationContext());
-                        homo = photo;
-                        Properties.Settings.Default.imgpass = photo;
-                        Properties.Settings.Default.Save();
-                        tweet.Clear();
-                    }
-                }
-                catch (NullReferenceException)
-                {
-                    System.Windows.MessageBox.Show("フォルダに新しく画像が書きこまれてないようです。画像を書き込んでから実行してください", "注意");
-                }
-                catch(Exception)
-                {
-
+                    UpdateBackground(image);
+                    if (homo != image) StatusesUpdate(image);
                 }
             }
         }
