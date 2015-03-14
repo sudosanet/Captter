@@ -53,8 +53,7 @@ namespace captter3
         //coreTweet
         public CoreTweet.OAuth.OAuthSession session;
         public CoreTweet.Tokens token;
-        public const string CK = "bTLiIE3LOyadvojbBf5AEXIsU";
-        public const string CS = "ztjWDrWJ9YOsfPKMRw9Q0uqDywEjmmCKSIIK6eoXP81tWYe9H6";
+
         public MainWindow()
         {
             InitializeComponent();
@@ -100,14 +99,23 @@ namespace captter3
         {
             if(!syaro)
             {
-                MessageBoxResult result = System.Windows.MessageBox.Show("この機能はあなたのタイムラインにいる人に迷惑がかかる可能性があります。\n\n有効にしますか？", "警告",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Warning);
+                if (Properties.Settings.Default.AllowSyaromode)
+                {
+                    syaro = true;
+                    mode.Content = "true";
+                }
+                else
+                {
+                    MessageBoxResult result = System.Windows.MessageBox.Show(
+                        "この機能はあなたのタイムラインにいる人に迷惑がかかる可能性があります。\n\n有効にしますか？", "警告",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Warning);
                     if (result == MessageBoxResult.Yes)
                     {
                         syaro = true;
                         mode.Content = "true";
                     }
+                }
 
             }
             else
@@ -139,8 +147,7 @@ namespace captter3
             testTimer.Interval = new TimeSpan(0, 0, 1);
             testTimer.Tick += new EventHandler(testTimer_Tick);
             testTimer.Start();
-            token = Tokens.Create(CK,
-                CS,
+            token = Tokens.Create(twitter.CK,twitter.CS,
                 Properties.Settings.Default.AccessToken,
                 Properties.Settings.Default.TokenSecret);
 
@@ -185,6 +192,18 @@ namespace captter3
                     select new { file.FullName, file.CreationTime }).Last();
 
                 string photo = newestFile.FullName; // ツイートする画像のパス
+
+                //画像の読み込み
+                BitmapImage img = new BitmapImage();
+                img.BeginInit();
+                img.UriSource = new Uri(photo);
+                img.CacheOption = BitmapCacheOption.OnLoad;
+                img.EndInit();
+                ImageBrush imageBrush = new ImageBrush();
+                imageBrush.ImageSource = img;
+                //ブラシを背景に
+                this.Background = imageBrush;
+
                 if (Properties.Settings.Default.imgpass == photo)
                 {
                     //連投防止
@@ -192,23 +211,14 @@ namespace captter3
                 }
                 else if (photo != homo)
                 {
-                        //画像の読み込み
-                        BitmapImage img = new BitmapImage();
-                        img.BeginInit();
-                        img.UriSource = new Uri(photo);
-                        img.CacheOption = BitmapCacheOption.OnLoad;
-                        img.EndInit();
-                        ImageBrush imageBrush = new ImageBrush();
-                        imageBrush.ImageSource = img;
-                        //ブラシを背景に
-                        this.Background = imageBrush;
-                        
+                    if (syaro)
+                    {
                         //tweet
                         var mediaUploadTask = token.Media.UploadAsync(
                             media => new FileInfo(photo));
                         string statusText = tweet.Text;
                         string hashtagText = has.Text;
-                        mediaUploadTask.ContinueWith((x) => 
+                        mediaUploadTask.ContinueWith((x) =>
                             {
                                 if (x.IsCompleted)
                                 {
@@ -219,8 +229,9 @@ namespace captter3
                             }, TaskScheduler.FromCurrentSynchronizationContext());
                         homo = photo;
                         Properties.Settings.Default.imgpass = photo;
+                        Properties.Settings.Default.Save();
                         tweet.Clear();
-
+                    }
                 }
             }
             catch (Exception)
@@ -257,6 +268,18 @@ namespace captter3
                         .Last();
 
                     string photo = newestFile.FullName; // ツイートする画像のパス
+
+                    //画像の読み込み
+                    BitmapImage img = new BitmapImage();
+                    img.BeginInit();
+                    img.UriSource = new Uri(photo);
+                    img.CacheOption = BitmapCacheOption.OnLoad;
+                    img.EndInit();
+                    ImageBrush imageBrush = new ImageBrush();
+                    imageBrush.ImageSource = img;
+                    //ブラシを背景に
+                    this.Background = imageBrush;
+
                     if (Properties.Settings.Default.imgpass == photo)
                     {
                         //連投防止
@@ -264,18 +287,7 @@ namespace captter3
                     }
 
                     else if (photo != homo)
-                    {
-                        //画像の読み込み
-                        BitmapImage img = new BitmapImage();
-                        img.BeginInit();
-                        img.UriSource = new Uri(photo);
-                        img.CacheOption = BitmapCacheOption.OnLoad;
-                        img.EndInit();
-                        ImageBrush imageBrush = new ImageBrush();
-                        imageBrush.ImageSource = img;
-                        //ブラシを背景に
-                        this.Background = imageBrush;
-                        
+                    {   
                         //tweet
                         var mediaUploadTask = token.Media.UploadAsync(
                             media => new FileInfo(photo));
@@ -292,6 +304,7 @@ namespace captter3
                             }, TaskScheduler.FromCurrentSynchronizationContext());
                         homo = photo;
                         Properties.Settings.Default.imgpass = photo;
+                        Properties.Settings.Default.Save();
                         tweet.Clear();
                     }
                 }
