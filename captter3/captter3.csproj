@@ -65,10 +65,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Core\imagesearch.cs" />
     <Compile Include="EE.xaml.cs">
       <DependentUpon>EE.xaml</DependentUpon>
     </Compile>
-    <Compile Include="twitter.cs" />
+    <Compile Include="Core\twitter.cs" />
     <Compile Include="Window1.xaml.cs">
       <DependentUpon>Window1.xaml</DependentUpon>
     </Compile>
@@ -142,9 +143,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="無題.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="karen.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\inari.wav" />
