@@ -9,9 +9,9 @@
             <RowDefinition Height="42*"/>
         </Grid.RowDefinitions>
         <TabControl HorizontalAlignment="Left" Height="319" VerticalAlignment="Top" Width="562">
-            <TabItem Header="基本設定">
-                <Grid Background="#FFE5E5E5" Margin="0,-3,0,3">
-                    <RadioButton x:Name="jpg" Content=".jpg" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" IsChecked="True"/>
+            <TabItem Header="基本設定" Margin="0">
+                <Grid Background="#FFE5E5E5">
+                    <RadioButton x:Name="jpg" Content=".jpg" HorizontalAlignment="Left" Margin="10,0,0,235" VerticalAlignment="Bottom" IsChecked="True"/>
                     <Label Content="検索拡張子" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="91"/>
                     <RadioButton x:Name="png" Content=".png" HorizontalAlignment="Left" Margin="10,59,0,0" VerticalAlignment="Top"/>
                     <Label Content="検索フォルダー" HorizontalAlignment="Left" Margin="10,78,0,0" VerticalAlignment="Top"/>
@@ -20,7 +20,7 @@
                     <CheckBox x:Name="syaro" Content="シャロモード切替時に警告を表示しない" Margin="10,131,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"  />
                 </Grid>
             </TabItem>
-            <TabItem Header="高度な設定" HorizontalAlignment="Left" Height="19" VerticalAlignment="Top" Width="73" Margin="-2,-2,-11,0">
+            <TabItem Header="高度な設定" HorizontalAlignment="Left" Height="19" VerticalAlignment="Top" Width="74" Margin="0">
                 <Grid Background="#FFE5E5E5">
                     <CheckBox x:Name="acp" Content="私は危険を承知しました" HorizontalAlignment="Left" Margin="16,38,0,0" VerticalAlignment="Top" Click="checkBox_Checked"/>
                     <Label x:Name="label" Content="ここにある設定を変更した場合、プログラムが動作しなくなる可能性があります" HorizontalAlignment="Left" Margin="16,10,0,0" VerticalAlignment="Top"/>
@@ -30,7 +30,7 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="情報" HorizontalAlignment="Left" Height="19" VerticalAlignment="Top" Width="60">
+            <TabItem Header="情報" HorizontalAlignment="Left" Height="19" VerticalAlignment="Top" Width="60" Margin="0">
                 <Grid Background="#FFE5E5E5">
                     <ListView x:Name="list" HorizontalAlignment="Left" Height="292" VerticalAlignment="Top" Width="556" Foreground="#FF031E66">
                         <ListView.View>
