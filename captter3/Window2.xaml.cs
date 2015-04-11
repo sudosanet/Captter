@@ -136,7 +136,7 @@ namespace captter3
         private void next_Click(object sender, RoutedEventArgs e)
         {
             var win = new Window3();
-            win.Show();
+            win.ShowDialog();
             this.Close();
         }
     }
