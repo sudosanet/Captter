@@ -76,7 +76,7 @@ namespace captter3
             }
             Properties.Settings.Default.Save();
             var win = new Window4();
-            win.Show();
+            win.ShowDialog();
             this.Close();
         }
 
