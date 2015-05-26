@@ -37,8 +37,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CoreTweet">
-      <HintPath>..\packages\CoreTweet.0.4.1\lib\net40\CoreTweet.dll</HintPath>
+    <Reference Include="CoreTweet, Version=0.4.3.110, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\CoreTweet.0.4.3.110\lib\net45\CoreTweet.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Newtonsoft.Json">
@@ -66,6 +67,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Core\imagesearch.cs" />
+    <Compile Include="Core\update.cs" />
     <Compile Include="EE.xaml.cs">
       <DependentUpon>EE.xaml</DependentUpon>
     </Compile>

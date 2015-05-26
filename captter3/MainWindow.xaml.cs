@@ -62,6 +62,7 @@ namespace captter3
         public MainWindow()
         {
             InitializeComponent();
+            new update();
         }
 
         /// <summary>

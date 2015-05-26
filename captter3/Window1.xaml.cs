@@ -131,18 +131,8 @@ namespace captter3
 
         private void ListViewItem_Selected(object sender, RoutedEventArgs e)
         {
-            /*
-            アップデート機能実装予定仕様
-
-            サーバー(11514.jpnなど)からJSONなどでデーターを受け取る
-            データーの内容は
-            ・最新のバージョン
-            ・更新内容
-            ・ファイルのURL
-            内部バージョンと照らし合わせて最新バージョンのほうが数が大きい値の場合はアップデート確認画面を表示
-            そのさい更新内容を表示する
-            その後URLからファイルをダウンロードしてファイルを書き換え再起動
-            */
+            //こうしたほうがいい感じがしたので
+            new Core.update();
         }
 
         private void checkBox_Checked(object sender, RoutedEventArgs e)
