@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Forms;
+using captter3.Core;
 
 namespace captter3
 {
@@ -26,6 +27,8 @@ namespace captter3
             InitializeComponent();
         }
         int cva = 0;
+        //update
+        private update update = new update();
         //閉じるボタン非表示にするためWin32APIを使う
         private const int GWL_STYLE = -16;
         private const int WS_SYSMENU = 0x80000;
@@ -132,7 +135,7 @@ namespace captter3
         private void ListViewItem_Selected(object sender, RoutedEventArgs e)
         {
             //こうしたほうがいい感じがしたので
-            new Core.update();
+            update.download();
         }
 
         private void checkBox_Checked(object sender, RoutedEventArgs e)
