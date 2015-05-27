@@ -8,7 +8,15 @@ using Newtonsoft.Json;
 
 namespace captter3.Core
 {
-    class update
+
+    public class RootObject
+    {
+        public int version { get; set; }
+        public string change { get; set; }
+        public string url { get; set; }
+    }
+
+    public class update
     {
         /*
         アップデート機能実装予定仕様
@@ -31,15 +39,36 @@ namespace captter3.Core
         "change" : "・ファイル読み込みバグを直した \n ・動作を高速化した \n",
         "url" : "https://github.com/sudosan/Captter/releases/download/star/captter3.zip"
         }
-         *JSON.NETを使う場合
-        public class RootObject
-        {
-            public int version { get; set; }
-            public string change { get; set; }
-            public string url { get; set; }
-        }
          */
 
+        public void download()
+        {
+            try
+            {
+                string jsonurl = "https://114514.jp/update.json";
+                System.Net.WebClient data = new System.Net.WebClient();
+                byte[] bdata = data.DownloadData(jsonurl);
+                data.Dispose();
+                string json = System.Text.Encoding.UTF8.GetString(bdata);
+                var deserializedList = JsonConvert.DeserializeObject<RootObject>(json);
+                //MessageBox.Show(deserializedList.version.ToString());
+                if(114513<deserializedList.version)
+                {
+                    MessageBoxResult result = System.Windows.MessageBox.Show(
+                    "新しいバージョンがあります。アップデートしますか？" + Environment.NewLine + "更新内容" + Environment.NewLine + deserializedList.change, "updater",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        //アップデート処理
+                    }
+                }
+            }
+            catch(Exception)
+            {
+
+            }
+        }
 
     }
 }

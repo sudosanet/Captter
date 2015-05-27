@@ -58,11 +58,12 @@ namespace captter3
         public CoreTweet.Tokens token;
         //画像検索
         private ImageSearch imageSearch = new ImageSearch();
-
+        //update
+        private update update = new update();
         public MainWindow()
         {
             InitializeComponent();
-            new update();
+            
         }
 
         /// <summary>
@@ -152,6 +153,7 @@ namespace captter3
 
             imageSearch.foundNewImage += ImageSearch_NewImageFound;
             imageSearch.Start();
+            update.download();
         }
 
         /// <summary>
