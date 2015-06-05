@@ -61,7 +61,9 @@ namespace captter3.Core
                     if (result == MessageBoxResult.Yes)
                     {
                         //アップデート処理
-                        var update = new updater(deserializedList.url);
+                        var update = new updater();
+                        update.url = deserializedList.url;
+                        update.download();
                         update.ShowDialog();
                     }
                 }
