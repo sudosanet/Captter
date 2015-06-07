@@ -3,13 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="updater" Height="300" Width="373" ResizeMode="NoResize">
     <Grid>
-        <ProgressBar HorizontalAlignment="Left" Height="37" Margin="10,175,0,0" VerticalAlignment="Top" Width="347"/>
+        <ProgressBar x:Name="pb" HorizontalAlignment="Left" Height="37" Margin="10,175,0,0" VerticalAlignment="Top" Width="347"/>
         <Label Content="アップデートしています・・・" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="restart" Content="再起動" HorizontalAlignment="Left" Margin="10,224,0,0" VerticalAlignment="Top" Width="347" Height="38"/>
-        <Label x:Name="downloading" Content="ファイルをダウンロードしています(n%)・・・" HorizontalAlignment="Left" Margin="10,43,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="ext" Content="ファイルを展開しています・・・" HorizontalAlignment="Left" Margin="10,76,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="okikae" Content="ファイルを置き換えています・・・" HorizontalAlignment="Left" Margin="10,109,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="done" Content="アップデートが完了しました、ボタンを押すと再起動します" HorizontalAlignment="Left" Margin="10,142,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="restart" Content="キャンセル" HorizontalAlignment="Left" Margin="10,224,0,0" VerticalAlignment="Top" Width="347" Height="38" Click="restart_Click"/>
+        <Label x:Name="downloading" Content="ファイルをダウンロードしています(n%)・・・" HorizontalAlignment="Left" Margin="10,43,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
+        <Label x:Name="ext" Content="ファイルを展開しています・・・" HorizontalAlignment="Left" Margin="10,76,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
+        <Label x:Name="okikae" Content="ファイルを置き換えています・・・" HorizontalAlignment="Left" Margin="10,109,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
+        <Label x:Name="done" Content="アップデートが完了しました、再起動します" HorizontalAlignment="Left" Margin="10,142,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
 
     </Grid>
 </Window>
