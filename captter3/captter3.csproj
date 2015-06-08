@@ -36,6 +36,9 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>CGf6dg7UQAI9XzL_orig.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="CoreTweet, Version=0.4.3.110, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -155,10 +158,13 @@
     <Resource Include="無題.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\inari.wav" />
+    <Resource Include="icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="inari.png" />
+    <Folder Include="Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="CGf6dg7UQAI9XzL_orig.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

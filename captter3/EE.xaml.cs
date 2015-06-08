@@ -41,13 +41,13 @@ namespace captter3
         int stc = 0;
         private void Image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            
+            /*脱臭
             System.IO.Stream inari = Properties.Resources.inari;
             System.Media.SoundPlayer player = new System.Media.SoundPlayer(inari);
             player.Play();
-            player.Dispose();
+            player.Dispose();*/
             stc++;
-            ver.Text = "Captter 3.1 inari";
+            ver.Text = "Captter 3.2";
             if(stc==1)
             {
                 st.ScaleX = 0.6;

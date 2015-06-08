@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="EE" Height="300" Width="300" ResizeMode="NoResize" Loaded="Window_Loaded" Topmost="True">
     <Grid>
-        <Image HorizontalAlignment="Center" Height="269" VerticalAlignment="Center" Width="292" Source="inari.png" MouseLeftButtonDown="Image_MouseLeftButtonDown">
+        <Image HorizontalAlignment="Center" Height="269" VerticalAlignment="Center" Width="292" Source="icon.png" MouseLeftButtonDown="Image_MouseLeftButtonDown">
             <Image.LayoutTransform>
                 <TransformGroup>
                     <ScaleTransform x:Name="st" ScaleX="0.5" ScaleY="0.5"/>
@@ -13,7 +13,7 @@
                 </TransformGroup>
             </Image.LayoutTransform>
             <Image.OpacityMask>
-                <ImageBrush ImageSource="inari.png" Stretch="None"/>
+                <ImageBrush ImageSource="icon.png" Stretch="None"/>
             </Image.OpacityMask>
         </Image>
         <TextBlock x:Name="ver" Margin="69,239,70,0" TextWrapping="Wrap" Text="上の絵をクリック！" VerticalAlignment="Top" FontSize="16"/>

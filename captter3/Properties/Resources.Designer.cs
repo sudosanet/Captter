@@ -59,14 +59,5 @@ namespace captter3.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   System.IO.MemoryStream に類似した型 System.IO.UnmanagedMemoryStream のローカライズされたリソースを検索します。
-        /// </summary>
-        internal static System.IO.UnmanagedMemoryStream inari {
-            get {
-                return ResourceManager.GetStream("inari", resourceCulture);
-            }
-        }
     }
 }
