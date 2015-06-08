@@ -264,6 +264,11 @@ namespace captter3
             this.Left = X - (this.Width);
             //string i = Convert.ToString(dpiY);
             //System.Windows.MessageBox.Show(i);
+            try
+            {
+                System.IO.Directory.Delete(System.Environment.CurrentDirectory + "\\tmp", true);
+            }
+            catch (DirectoryNotFoundException) { return; }
         }
 
         private void keep_Click(object sender, RoutedEventArgs e)

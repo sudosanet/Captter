@@ -32,6 +32,7 @@ namespace captter3
             get { return _url; }
             set { _url = value; }
         }
+        
         System.Net.WebClient down = null;
         string uppath = System.Environment.CurrentDirectory + "\\tmp\\update.zip";
         string path = System.Environment.CurrentDirectory + "\\tmp";
