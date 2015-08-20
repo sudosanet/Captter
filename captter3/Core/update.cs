@@ -45,14 +45,14 @@ namespace captter3.Core
         {
             try
             {
-                string jsonurl = "https://114514.jp/update.json";
+                string jsonurl = "https://sudosan.net/update.json";
                 System.Net.WebClient data = new System.Net.WebClient();
                 byte[] bdata = data.DownloadData(jsonurl);
                 data.Dispose();
                 string json = System.Text.Encoding.UTF8.GetString(bdata);
                 var deserializedList = JsonConvert.DeserializeObject<RootObject>(json);
                 //MessageBox.Show(deserializedList.version.ToString());
-                if(1<deserializedList.version)
+                if(2<deserializedList.version)
                 {
                     MessageBoxResult result = System.Windows.MessageBox.Show(
                     "新しいバージョンがあります。アップデートしますか？" + Environment.NewLine + "更新内容" + Environment.NewLine + deserializedList.change, "updater",
