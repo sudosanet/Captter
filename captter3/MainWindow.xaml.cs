@@ -63,7 +63,13 @@ namespace captter3
         public MainWindow()
         {
             InitializeComponent();
-            
+            //移行処理
+            if (Properties.Settings.Default.IsUpgrade == false)
+            {
+                Properties.Settings.Default.Upgrade();
+                Properties.Settings.Default.IsUpgrade = true;
+                Properties.Settings.Default.Save();
+            }
         }
 
         /// <summary>

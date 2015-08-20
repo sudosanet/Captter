@@ -97,6 +97,8 @@ namespace captter3
             System.IO.File.Delete(uppath);
 
             System.Diagnostics.Process.Start("Restarter.exe");
+            Properties.Settings.Default.IsUpgrade = false;
+            Properties.Settings.Default.Save();
             Environment.Exit(0);
         }
     }

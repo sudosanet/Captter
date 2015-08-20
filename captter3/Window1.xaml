@@ -38,11 +38,11 @@
                                 <GridViewColumn/>
                             </GridView>
                         </ListView.View>
-                        <ListViewItem Content="ソフトウェア更新(できる)" Margin="0" Height="53" FontSize="22" Selected="ListViewItem_Selected" />
-                        <ListViewItem x:Name="cv" Content="Capter version:3.1 beta" Margin="0" Height="53" FontSize="22" Selected="cv_Selected" MouseLeftButtonUp="cv_MouseLeftButtonUp"/>
-                        <ListViewItem Content="CoreTweet version:0.4.0.6231" Margin="0" Height="53" FontSize="22"/>
+                        <ListViewItem Content="ソフトウェア更新" Margin="0" Height="53" FontSize="22" Selected="ListViewItem_Selected" />
+                        <ListViewItem x:Name="cv" Content="Capter version:3.1" Margin="0" Height="53" FontSize="22" Selected="cv_Selected" MouseLeftButtonUp="cv_MouseLeftButtonUp"/>
+                        <ListViewItem Content="CoreTweet version:0.4.3.110" Margin="0" Height="53" FontSize="22"/>
                         <ListViewItem Content="License:LGPLv3" Margin="0" Height="53" FontSize="22"/>
-                        <ListViewItem x:Name="date" Content="build date:14/01/2015" Margin="0" Height="53" FontSize="22"/>
+                        <ListViewItem x:Name="date" Content="build date:21/08/2015" Margin="0" Height="53" FontSize="22"/>
                     </ListView>
                 </Grid>
             </TabItem>
